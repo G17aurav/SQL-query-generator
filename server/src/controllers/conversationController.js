@@ -2,15 +2,22 @@ const prisma = require('../models/prisma');
 
 async function startConversation(req, res) {
   const { title, schemaText } = req.body;
+
+  if (!title || !schemaText) {
+    return res.status(404).json({ error: 'Title and schemaText are required' });
+  }
   try {
     const conversation = await prisma.conversation.create({
-      data: {
-        title,
-        schema: { create: { schemaText } }
-      },
-      include: { schema: true }
+      data: { title }
     });
-    res.json(conversation);
+
+    const schema = await prisma.schema.create({
+      data: {
+        conversationId: conversation.id,
+        schemaText
+      }
+    });
+    res.json({ ...conversation, schema });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

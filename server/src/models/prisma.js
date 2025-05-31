@@ -1,4 +1,5 @@
-import { PrismaClient } from "@prisma/client";
+// prisma.js (CommonJS)
+const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
 
@@ -8,10 +9,10 @@ const checkDatabaseConnection = async () => {
     console.log("Database connected successfully");
   } catch (error) {
     console.error("Database connection failed:", error);
-    process.exit(1); 
+    process.exit(1);
   }
 };
 
 checkDatabaseConnection();
 
-export default prisma;
+module.exports = prisma;

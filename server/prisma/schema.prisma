@@ -9,10 +9,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id            String          @id @default(uuid())
+  name          String?
+  email         String          @unique
+  password      String
+  createdAt     DateTime        @default(now())
+
+  conversations Conversation[]  @relation("UserConversations")
+}
+
 model Conversation {
   id        String    @id @default(uuid())
+  userId    String
   title     String?
   createdAt DateTime  @default(now())
+
+  user      User      @relation("UserConversations", fields: [userId], references: [id])
   schema    Schema?   // One-to-One relation (optional)
   messages  Message[] // One-to-Many relation
 }

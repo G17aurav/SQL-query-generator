@@ -18,7 +18,6 @@ async function sendMessage(req, res) {
     }));
 
     const sqlResponse = await generateSQL(conversation.schema.schemaText, history, message);
-
     await prisma.message.createMany({
       data: [
         { conversationId, role: 'user', content: message },

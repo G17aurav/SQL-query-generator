@@ -28,6 +28,7 @@ async function register(req, res) {
     res
       .status(201)
       .json({
+        success: true,
         user: { id: user.id, name: user.name, email: user.email },
         token,
       });
